@@ -13,8 +13,16 @@
     <div class="todo-container">
       <div class="todo-wrap">
         <MyHeaderVue :addTodo="addTodo" />
-        <MyListVue :todos="todos" />
-        <MyFooterVue />
+        <MyListVue
+          :todos="todos"
+          :checkStatusChange="checkStatusChange"
+          :handleDelete="handleDelete"
+        />
+        <MyFooterVue
+          :todos="todos"
+          :changeChackAll="changeChackAll"
+          :clearAll="clearAll"
+        />
       </div>
     </div>
   </div>
@@ -38,16 +46,36 @@ export default {
   },
   data() {
     return {
-      todos: [
-        { id: "001", title: "抽烟", done: true },
-        { id: "002", title: "喝酒", done: false },
-        { id: "003", title: "烫头", done: true },
-      ],
+      todos: JSON.parse(localStorage.getItem("todos")) || [],
     };
   },
   methods: {
     addTodo(todo) {
-      this.todos.unshift(todo)
+      this.todos.unshift(todo);
+    },
+    checkStatusChange(id) {
+      this.todos.forEach((item) => {
+        if (item.id === id) {
+          item.done = !item.done;
+        }
+      });
+    },
+    handleDelete(id) {
+      this.todos = this.todos.filter((todo) => todo.id !== id);
+    },
+    changeChackAll(done) {
+      this.todos.forEach((todo) => (todo.done = done));
+    },
+    clearAll() {
+      this.todos = this.todos.filter((todo) => !todo.done);
+    },
+  },
+  watch: {
+    todos: {
+      deep: true,
+      handler(value) {
+        localStorage.setItem("todos", JSON.stringify(value));
+      },
     },
   },
 };

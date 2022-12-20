@@ -1,17 +1,31 @@
 <template>
   <li>
     <label>
-      <input type="checkbox" :checked="todo.done" />
-      <span>{{todo.title}}</span>
+      <input
+        type="checkbox"
+        :checked="todo.done"
+        @change="myCheckStatusChange(todo.id)"
+      />
+      <span>{{ todo.title }}</span>
     </label>
-    <button class="btn btn-danger" style="display: none">删除</button>
+    <button class="btn btn-danger" @click="myHandleDelete(todo.id)">删除</button>
   </li>
 </template>
 
 <script>
 export default {
   name: "MyItem",
-  props:['todo']
+  props: ["todo",'checkStatusChange','handleDelete'],
+  methods: {
+    myCheckStatusChange(id) {
+      // 调用
+      this.checkStatusChange(id)
+    },
+    myHandleDelete(id){
+      if(confirm("确定要删除吗?"))
+      this.handleDelete(id)
+    }
+  },
 };
 </script>
 
@@ -49,5 +63,13 @@ li:before {
 
 li:last-child {
   border-bottom: none;
+}
+
+li:hover {
+  background-color: #ddd;
+}
+
+li:hover button{
+  display: block;
 }
 </style>
