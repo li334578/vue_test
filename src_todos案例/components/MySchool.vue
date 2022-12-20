@@ -3,7 +3,6 @@
     <h2>学校名称：{{ name }}</h2>
     <h2>学校地址：{{ address }}</h2>
     <button @click="showName">点我提示学校名</button>
-    <button @click="tipFatherMsg">点我提示父组件的参数</button>
   </div>
 </template>
 
@@ -19,10 +18,6 @@ export default {
   methods: {
     showName() {
       alert(this.name);
-    },
-    tipFatherMsg() {
-      this.$emit("wb", this.name);
-
     },
   },
 };
